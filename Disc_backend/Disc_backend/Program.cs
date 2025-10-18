@@ -6,6 +6,32 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+//Cors
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "AllowAll",
+                              policy =>
+                              {
+                                  policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+
+                              });
+    options.AddPolicy(name: "AllowSome",
+                              policy =>
+                              {
+                                  //policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                                  policy.WithOrigins("http://zealand.dk").WithMethods("Post", "Put").SetPreflightMaxAge(TimeSpan.FromSeconds(1440)).AllowAnyHeader();
+
+                              });
+    options.AddPolicy(name: "OnlyGET",
+                              policy =>
+                              {
+                                  policy.AllowAnyOrigin()
+                                  .WithMethods("GET")
+                                  .AllowAnyHeader();
+                              });
+});
+
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -31,6 +57,9 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+//cors
+app.UseCors("AllowAll");
 
 app.MapControllers();
 

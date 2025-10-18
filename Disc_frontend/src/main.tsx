@@ -4,7 +4,6 @@ import App from "./App.tsx";
 
 import { ChakraProvider, ColorModeScript } from "@chakra-ui/react";
 import theme from "./theme.ts";
-// import theme from "./theme.ts";
 
 
 createRoot(document.getElementById("root")!).render(

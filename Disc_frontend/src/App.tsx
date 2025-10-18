@@ -1,4 +1,3 @@
-import './App.css'
 import { Grid, GridItem, Show } from '@chakra-ui/react'
 import { NavBar } from './components/NavBar'
 import EmployeeGrid from './components/EmployeeGrid'
@@ -15,6 +14,7 @@ function App() {
       </Show>
       <GridItem area="main" bg="red.500">
         <EmployeeGrid/>
+        hello
       </GridItem>
     </Grid>
   )

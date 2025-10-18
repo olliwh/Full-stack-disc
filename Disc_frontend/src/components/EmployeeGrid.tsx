@@ -1,32 +1,25 @@
-import React from "react";
-import apiClient from "../services/api-client";
-import { Text } from "@chakra-ui/react";
-interface Employee {
-  id: number;
-  name: string;
-}
-interface EmployeeResponse {
-  count: number;
-  results: Employee[];
-}
-const EmployeeGrid = () => {
-  const [employees, setEmployees] = React.useState<Employee[]>([]);
 
-  const [error, setError] = React.useState("");
-  React.useEffect(() => {
-    apiClient
-      .get<EmployeeResponse>("/employees")
-      .then((res) => setEmployees(res.data.results))
-      .catch((err) => setError(err.message));
-  }, []);
+import { SimpleGrid, Text } from "@chakra-ui/react";
+import useEmployees from "../hooks/useEmployees";
+import EmployeeCard from "./EmployeeCard";
+
+  
+
+const EmployeeGrid = () => {
+
+  const {employees, error} = useEmployees();
   return (
     <div>
       {error && <Text color="tomato">{error}</Text>}
-      <ul>
-        {employees.map((employee) => (
-          <li key={employee.id}>{employee.name}</li>
+      <SimpleGrid
+        columns={{ sm: 1, md: 2, lg: 3, xl: 5 }}
+        spacing={10}//space between cards
+        padding="10"//space to sides
+        >
+        {employees?.map((employee) => (
+          <EmployeeCard key={employee.id} employee={employee} />
         ))}
-      </ul>
+      </SimpleGrid>
     </div>
   );
 };

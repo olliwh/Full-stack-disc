@@ -10,7 +10,13 @@ namespace Disc_backend.Controllers
     public class EmployeesController : GenericController<Employee>
     {
         public EmployeesController(IGenericRepository<Employee> repository) : base(repository) { }
-
+        /// <summary>
+        /// todo:
+        /// return statuscode on all controllers
+        /// employee_priovate info controller?
+        /// </summary>
+        /// <param name="departmentId"></param>
+        /// <returns></returns>
         // Example of custom endpoint
         [HttpGet("by-department/{departmentId}")]
         public IActionResult GetByDepartment(int departmentId)

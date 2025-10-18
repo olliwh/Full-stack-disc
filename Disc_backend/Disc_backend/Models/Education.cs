@@ -13,5 +13,5 @@ public partial class Education
 
     public int? Grade { get; set; }
 
-    public virtual ICollection<Person> People { get; set; } = new List<Person>();
+    public virtual ICollection<Employee> Employees { get; set; } = new List<Employee>();
 }
