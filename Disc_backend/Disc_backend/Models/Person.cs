@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Disc_backend.Models;
 
@@ -10,7 +11,7 @@ public partial class Person
     public string? PrivateEmail { get; set; }
 
     public string? PrivatePhone { get; set; }
-
+    [JsonIgnore] //hides CPR from API responses
     public string Cpr { get; set; } = null!;
 
     public string FirstName { get; set; } = null!;
@@ -18,6 +19,8 @@ public partial class Person
     public string LastName { get; set; } = null!;
 
     public int? Experience { get; set; }
+
+    public string? ImagePath { get; set; }
 
     public virtual ICollection<Employee> Employees { get; set; } = new List<Employee>();
 

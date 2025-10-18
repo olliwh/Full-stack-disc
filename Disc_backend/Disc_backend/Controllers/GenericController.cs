@@ -3,9 +3,15 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Disc_backend.Controllers
 {
+    /// <summary>
+    /// BaseController
+    /// Abstract because it should never be used directly
+    /// All functions can be overwridden because of virtual
+    /// </summary>
+    /// <typeparam name="TEntity"></typeparam>
     [Route("api/[controller]")]
     [ApiController]
-    public class GenericController<TEntity> : ControllerBase where TEntity : class
+    public abstract class GenericController<TEntity> : ControllerBase where TEntity : class
     {
         private readonly IGenericRepository<TEntity> _repository;
 
@@ -15,9 +21,6 @@ namespace Disc_backend.Controllers
         }
 
         //put ProducesResponseType on all
-
-        //should i make this controller abstract
-        //why are functions virtual?
         //addemployee needs to do something about person
         //person has a list of employees
 

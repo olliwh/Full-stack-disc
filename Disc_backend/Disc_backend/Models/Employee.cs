@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Disc_backend.Models;
 
 public partial class Employee
 {
     public int Id { get; set; }
-
-    public string Name { get; set; } = null!;
 
     public string? Email { get; set; }
 
@@ -40,4 +39,6 @@ public partial class Employee
     public virtual ICollection<SocialEvent> SocialEvents { get; set; } = new List<SocialEvent>();
 
     public virtual ICollection<Task> Tasks { get; set; } = new List<Task>();
+    [NotMapped]
+    public string FullName => $"{Person?.FirstName} {Person?.LastName}";
 }
