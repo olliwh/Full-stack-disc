@@ -1,5 +1,6 @@
 ﻿using Disc_backend.Models;
 using Disc_backend.Repositories;
+using Isopoh.Cryptography.Argon2;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,6 +24,13 @@ namespace Disc_backend.Controllers
         {
             // You can extend with repo or DbContext logic
             return Ok($"Employees from department {departmentId}");
+        }
+        [HttpGet("getDefaultPass")]
+        public IActionResult getDefaultPass()
+        {
+            string password = "Pass@word1";
+            string hash = Argon2.Hash(password);
+            return Ok(hash);
         }
     }
 }

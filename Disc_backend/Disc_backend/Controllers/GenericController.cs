@@ -29,6 +29,7 @@ namespace Disc_backend.Controllers
         public virtual async Task<IActionResult> GetAll()
         {
             var entities = await _repository.GetAll();
+            await Task.Delay(TimeSpan.FromSeconds(5));
             return Ok(entities);
         }
 

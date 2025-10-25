@@ -26,6 +26,8 @@ public partial class DiscProfileDbContext : DbContext
 
     public virtual DbSet<Employee> Employees { get; set; }
 
+    public virtual DbSet<EmployeesCredential> EmployeesCredentials { get; set; }
+
     public virtual DbSet<EmployeesPrivateDatum> EmployeesPrivateData { get; set; }
 
     public virtual DbSet<Position> Positions { get; set; }
@@ -51,7 +53,7 @@ public partial class DiscProfileDbContext : DbContext
     {
         modelBuilder.Entity<Company>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__companie__3213E83F50CD4DC0");
+            entity.HasKey(e => e.Id).HasName("PK__companie__3213E83F8F60D46C");
 
             entity.ToTable("companies");
 
@@ -72,7 +74,7 @@ public partial class DiscProfileDbContext : DbContext
 
         modelBuilder.Entity<Department>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__departme__3213E83FA094C743");
+            entity.HasKey(e => e.Id).HasName("PK__departme__3213E83F12CFBBFB");
 
             entity.ToTable("departments");
 
@@ -88,12 +90,12 @@ public partial class DiscProfileDbContext : DbContext
             entity.HasOne(d => d.Company).WithMany(p => p.Departments)
                 .HasForeignKey(d => d.CompanyId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__departmen__compa__2C88998B");
+                .HasConstraintName("FK__departmen__compa__6F4A8121");
         });
 
         modelBuilder.Entity<DiscProfile>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__disc_pro__3213E83F029CF1C1");
+            entity.HasKey(e => e.Id).HasName("PK__disc_pro__3213E83F5CF03D48");
 
             entity.ToTable("disc_profiles");
 
@@ -114,7 +116,7 @@ public partial class DiscProfileDbContext : DbContext
 
         modelBuilder.Entity<Education>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__educatio__3213E83F36DF0BD7");
+            entity.HasKey(e => e.Id).HasName("PK__educatio__3213E83F59477180");
 
             entity.ToTable("educations");
 
@@ -132,7 +134,7 @@ public partial class DiscProfileDbContext : DbContext
 
         modelBuilder.Entity<Employee>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__employee__3213E83F44BB2E5A");
+            entity.HasKey(e => e.Id).HasName("PK__employee__3213E83F6FEE16AB");
 
             entity.ToTable("employees");
 
@@ -174,19 +176,19 @@ public partial class DiscProfileDbContext : DbContext
             entity.HasOne(d => d.Company).WithMany(p => p.Employees)
                 .HasForeignKey(d => d.CompanyId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__employees__compa__38EE7070");
+                .HasConstraintName("FK__employees__compa__7BB05806");
 
             entity.HasOne(d => d.Department).WithMany(p => p.Employees)
                 .HasForeignKey(d => d.DepartmentId)
-                .HasConstraintName("FK__employees__depar__39E294A9");
+                .HasConstraintName("FK__employees__depar__7CA47C3F");
 
             entity.HasOne(d => d.DiscProfile).WithMany(p => p.Employees)
                 .HasForeignKey(d => d.DiscProfileId)
-                .HasConstraintName("FK__employees__disc___3BCADD1B");
+                .HasConstraintName("FK__employees__disc___7E8CC4B1");
 
             entity.HasOne(d => d.Position).WithMany(p => p.Employees)
                 .HasForeignKey(d => d.PositionId)
-                .HasConstraintName("FK__employees__posit__3AD6B8E2");
+                .HasConstraintName("FK__employees__posit__7D98A078");
 
             entity.HasMany(d => d.Educations).WithMany(p => p.Employees)
                 .UsingEntity<Dictionary<string, object>>(
@@ -194,14 +196,14 @@ public partial class DiscProfileDbContext : DbContext
                     r => r.HasOne<Education>().WithMany()
                         .HasForeignKey("EducationId")
                         .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__employees__educa__4277DAAA"),
+                        .HasConstraintName("FK__employees__educa__08162EEB"),
                     l => l.HasOne<Employee>().WithMany()
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__employees__emplo__4183B671"),
+                        .HasConstraintName("FK__employees__emplo__07220AB2"),
                     j =>
                     {
-                        j.HasKey("EmployeeId", "EducationId").HasName("PK__employee__A1720756FC58ED45");
+                        j.HasKey("EmployeeId", "EducationId").HasName("PK__employee__A17207563015EDD7");
                         j.ToTable("employees_educations");
                         j.HasIndex(new[] { "EducationId" }, "idx_employees_educations_educations");
                         j.HasIndex(new[] { "EmployeeId" }, "idx_employees_educations_employees");
@@ -210,9 +212,30 @@ public partial class DiscProfileDbContext : DbContext
                     });
         });
 
+        modelBuilder.Entity<EmployeesCredential>(entity =>
+        {
+            entity.HasKey(e => e.EmployeeId).HasName("PK__employee__C52E0BA80241E284");
+
+            entity.ToTable("employees_credentials");
+
+            entity.Property(e => e.EmployeeId)
+                .ValueGeneratedNever()
+                .HasColumnName("employee_id");
+            entity.Property(e => e.PasswordHash)
+                .HasMaxLength(255)
+                .IsUnicode(false)
+                .HasColumnName("password_hash");
+            entity.Property(e => e.RequiresReset).HasColumnName("requires_reset");
+
+            entity.HasOne(d => d.Employee).WithOne(p => p.EmployeesCredential)
+                .HasForeignKey<EmployeesCredential>(d => d.EmployeeId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__employees__emplo__04459E07");
+        });
+
         modelBuilder.Entity<EmployeesPrivateDatum>(entity =>
         {
-            entity.HasKey(e => e.EmployeeId).HasName("PK__employee__C52E0BA8191D9F7B");
+            entity.HasKey(e => e.EmployeeId).HasName("PK__employee__C52E0BA8E348F7A3");
 
             entity.ToTable("employees_private_data");
 
@@ -235,12 +258,12 @@ public partial class DiscProfileDbContext : DbContext
             entity.HasOne(d => d.Employee).WithOne(p => p.EmployeesPrivateDatum)
                 .HasForeignKey<EmployeesPrivateDatum>(d => d.EmployeeId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__employees__emplo__3EA749C6");
+                .HasConstraintName("FK__employees__emplo__0169315C");
         });
 
         modelBuilder.Entity<Position>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__position__3213E83F551747E8");
+            entity.HasKey(e => e.Id).HasName("PK__position__3213E83FF6235F67");
 
             entity.ToTable("positions");
 
@@ -253,7 +276,7 @@ public partial class DiscProfileDbContext : DbContext
 
         modelBuilder.Entity<Project>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__projects__3213E83F1B18E29B");
+            entity.HasKey(e => e.Id).HasName("PK__projects__3213E83F190655DA");
 
             entity.ToTable("projects");
 
@@ -279,14 +302,14 @@ public partial class DiscProfileDbContext : DbContext
                     r => r.HasOne<Employee>().WithMany()
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__employees__emplo__595B4002"),
+                        .HasConstraintName("FK__employees__emplo__1EF99443"),
                     l => l.HasOne<Project>().WithMany()
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__employees__proje__58671BC9"),
+                        .HasConstraintName("FK__employees__proje__1E05700A"),
                     j =>
                     {
-                        j.HasKey("ProjectId", "EmployeeId").HasName("PK__employee__202B7EA514A1B524");
+                        j.HasKey("ProjectId", "EmployeeId").HasName("PK__employee__202B7EA56F4A74D5");
                         j.ToTable("employees_projects");
                         j.HasIndex(new[] { "EmployeeId" }, "idx_employees_projects_employees");
                         j.HasIndex(new[] { "ProjectId" }, "idx_employees_projects_projects");
@@ -297,7 +320,7 @@ public partial class DiscProfileDbContext : DbContext
 
         modelBuilder.Entity<ProjectsDiscProfile>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__projects__3213E83F505ABC7D");
+            entity.HasKey(e => e.Id).HasName("PK__projects__3213E83F7296DF38");
 
             entity.ToTable("projects_disc_profiles");
 
@@ -312,17 +335,17 @@ public partial class DiscProfileDbContext : DbContext
             entity.HasOne(d => d.DiscProfile).WithMany(p => p.ProjectsDiscProfiles)
                 .HasForeignKey(d => d.DiscProfileId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__projects___disc___5D2BD0E6");
+                .HasConstraintName("FK__projects___disc___22CA2527");
 
             entity.HasOne(d => d.Project).WithMany(p => p.ProjectsDiscProfiles)
                 .HasForeignKey(d => d.ProjectId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__projects___proje__5C37ACAD");
+                .HasConstraintName("FK__projects___proje__21D600EE");
         });
 
         modelBuilder.Entity<SocialEvent>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__social_e__3213E83FC21C6CCE");
+            entity.HasKey(e => e.Id).HasName("PK__social_e__3213E83F5DF41794");
 
             entity.ToTable("social_events");
 
@@ -345,11 +368,11 @@ public partial class DiscProfileDbContext : DbContext
             entity.HasOne(d => d.Company).WithMany(p => p.SocialEvents)
                 .HasForeignKey(d => d.CompanyId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__social_ev__compa__324172E1");
+                .HasConstraintName("FK__social_ev__compa__75035A77");
 
             entity.HasOne(d => d.DiscProfile).WithMany(p => p.SocialEvents)
                 .HasForeignKey(d => d.DiscProfileId)
-                .HasConstraintName("FK__social_ev__disc___314D4EA8");
+                .HasConstraintName("FK__social_ev__disc___740F363E");
 
             entity.HasMany(d => d.Employees).WithMany(p => p.SocialEvents)
                 .UsingEntity<Dictionary<string, object>>(
@@ -357,14 +380,14 @@ public partial class DiscProfileDbContext : DbContext
                     r => r.HasOne<Employee>().WithMany()
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__employees__emplo__558AAF1E"),
+                        .HasConstraintName("FK__employees__emplo__1B29035F"),
                     l => l.HasOne<SocialEvent>().WithMany()
                         .HasForeignKey("SocialEventId")
                         .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__employees__socia__54968AE5"),
+                        .HasConstraintName("FK__employees__socia__1A34DF26"),
                     j =>
                     {
-                        j.HasKey("SocialEventId", "EmployeeId").HasName("PK__employee__EF36199A93E4C34B");
+                        j.HasKey("SocialEventId", "EmployeeId").HasName("PK__employee__EF36199A2CB4E7B8");
                         j.ToTable("employees_social_events");
                         j.HasIndex(new[] { "EmployeeId" }, "idx_employees_social_events_employees");
                         j.HasIndex(new[] { "SocialEventId" }, "idx_employees_social_events_social");
@@ -375,7 +398,7 @@ public partial class DiscProfileDbContext : DbContext
 
         modelBuilder.Entity<StressMeasure>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__stress_m__3213E83FCCAFDD4D");
+            entity.HasKey(e => e.Id).HasName("PK__stress_m__3213E83F7E0A23B0");
 
             entity.ToTable("stress_measures");
 
@@ -391,17 +414,17 @@ public partial class DiscProfileDbContext : DbContext
             entity.HasOne(d => d.Employee).WithMany(p => p.StressMeasures)
                 .HasForeignKey(d => d.EmployeeId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__stress_me__emplo__4CF5691D");
+                .HasConstraintName("FK__stress_me__emplo__1293BD5E");
 
             entity.HasOne(d => d.Task).WithMany(p => p.StressMeasures)
                 .HasForeignKey(d => d.TaskId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__stress_me__task___4DE98D56");
+                .HasConstraintName("FK__stress_me__task___1387E197");
         });
 
         modelBuilder.Entity<Models.Task>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__tasks__3213E83FAA372DEF");
+            entity.HasKey(e => e.Id).HasName("PK__tasks__3213E83FCA47CE68");
 
             entity.ToTable("tasks", tb => tb.HasTrigger("task_is_complete"));
 
@@ -426,11 +449,11 @@ public partial class DiscProfileDbContext : DbContext
             entity.HasOne(d => d.Project).WithMany(p => p.Tasks)
                 .HasForeignKey(d => d.ProjectId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__tasks__project_i__4924D839");
+                .HasConstraintName("FK__tasks__project_i__0EC32C7A");
 
             entity.HasOne(d => d.TimeToCompleteNavigation).WithMany(p => p.Tasks)
                 .HasForeignKey(d => d.TimeToComplete)
-                .HasConstraintName("FK__tasks__time_to_c__4A18FC72");
+                .HasConstraintName("FK__tasks__time_to_c__0FB750B3");
 
             entity.HasMany(d => d.Employees).WithMany(p => p.Tasks)
                 .UsingEntity<Dictionary<string, object>>(
@@ -438,14 +461,14 @@ public partial class DiscProfileDbContext : DbContext
                     r => r.HasOne<Employee>().WithMany()
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__tasks_emp__emplo__51BA1E3A"),
+                        .HasConstraintName("FK__tasks_emp__emplo__1758727B"),
                     l => l.HasOne<Models.Task>().WithMany()
                         .HasForeignKey("TaskId")
                         .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__tasks_emp__task___50C5FA01"),
+                        .HasConstraintName("FK__tasks_emp__task___16644E42"),
                     j =>
                     {
-                        j.HasKey("TaskId", "EmployeeId").HasName("PK__tasks_em__98C0F437B4FC9EE2");
+                        j.HasKey("TaskId", "EmployeeId").HasName("PK__tasks_em__98C0F437ABED52FD");
                         j.ToTable("tasks_employees");
                         j.HasIndex(new[] { "EmployeeId" }, "idx_tasks_employees_employees");
                         j.HasIndex(new[] { "TaskId" }, "idx_tasks_employees_tasks");
@@ -456,7 +479,7 @@ public partial class DiscProfileDbContext : DbContext
 
         modelBuilder.Entity<TaskCompleteInterval>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__task_com__3213E83F7302A065");
+            entity.HasKey(e => e.Id).HasName("PK__task_com__3213E83FDDD53142");
 
             entity.ToTable("task_complete_intervals");
 

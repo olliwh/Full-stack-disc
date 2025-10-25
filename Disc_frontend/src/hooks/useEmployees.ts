@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import apiClient from "../services/api-client";
+import { CanceledError } from "axios";
 
 
 export interface Employee {
@@ -19,18 +20,28 @@ export interface Employee {
 const useEmployees = () => {
     const [employees, setEmployees] = useState<Employee[]>([]);
     const [error, setError] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+
 
      useEffect(() => {
         const controller = new AbortController();
 
         apiClient
           .get<Employee[]>("/employees")
-          .then((res) => setEmployees(res.data))
-          .catch((err) => setError(err.message));
+          .then((res) => {
+            setEmployees(res.data);
+            setIsLoading(false);
+          })
+          .catch((err) => {
+            if (err instanceof CanceledError) return;
+            setError(err.message);
+            setIsLoading(false);
+          });
+
 
           return () => controller.abort();//what is this
       }, []);
-    return { employees, error };
+    return { employees, error, isLoading };
 }
 
 export default useEmployees;

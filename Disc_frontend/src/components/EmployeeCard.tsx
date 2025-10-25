@@ -9,7 +9,14 @@ interface Props {
 const EmployeeCard = ({ employee }: Props) => {
     return (
         <Card borderRadius="1" overflow="hidden">
-            <Image src={employee.imagePath} alt={`${employee.firstName} ${employee.lastName}`} />
+            <Image 
+                src={employee.imagePath} 
+                alt={`${employee.firstName} ${employee.lastName}`}
+                width="100%"
+                height={"240px"}
+                objectFit="cover"
+                objectPosition="center top" 
+            />
             <CardBody>
                 <Heading size="md">{employee.firstName} {employee.lastName}</Heading>
             </CardBody>

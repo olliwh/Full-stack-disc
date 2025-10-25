@@ -12,7 +12,7 @@ function App() {
       <Show above='lg'>
         <GridItem area="aside" bg="green.500">Aside</GridItem>
       </Show>
-      <GridItem area="main" bg="red.500">
+      <GridItem area="main">
         <EmployeeGrid/>
         hello
       </GridItem>
