@@ -1,6 +1,7 @@
 import { Grid, GridItem, Show } from '@chakra-ui/react'
 import { NavBar } from './components/NavBar'
 import EmployeeGrid from './components/EmployeeGrid'
+import DepartmentList from './components/DepartmentList'
 
 function App() {
 
@@ -10,7 +11,9 @@ function App() {
     >
       <GridItem area="nav" ><NavBar/></GridItem>
       <Show above='lg'>
-        <GridItem area="aside" bg="green.500">Aside</GridItem>
+        <GridItem area="aside">
+          <DepartmentList/>
+        </GridItem>
       </Show>
       <GridItem area="main">
         <EmployeeGrid/>

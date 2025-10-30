@@ -1,10 +1,15 @@
 import { SimpleGrid, Text } from "@chakra-ui/react";
-import useEmployees from "../hooks/useEmployees";
+import { type Employee } from "../hooks/useEmployees";
 import EmployeeCard from "./EmployeeCard";
 import EmployeeCardSkeleton from "./EmployeeCardSkeleton";
+import useData from "../hooks/useData";
 
 const EmployeeGrid = () => {
-  const { employees, error, isLoading } = useEmployees();
+    const {
+    data: employees,
+    error,
+    isLoading,
+  } = useData<Employee>("/employees");
   // const skeletons = [...Array(employees.length).keys()];
   const skeletons = [...Array(10).keys()];
   
