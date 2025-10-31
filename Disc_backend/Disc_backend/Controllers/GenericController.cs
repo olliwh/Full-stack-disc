@@ -26,7 +26,9 @@ namespace Disc_backend.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public virtual async Task<IActionResult> GetAll()
+        public virtual async Task<IActionResult> GetAll(
+                [FromQuery] int? departments = null,
+                [FromQuery] int? positions = null)
         {
             var entities = await _repository.GetAll();
             await Task.Delay(TimeSpan.FromSeconds(5));

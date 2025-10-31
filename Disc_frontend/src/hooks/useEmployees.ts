@@ -1,7 +1,5 @@
-import { useEffect, useState } from "react";
-import apiClient from "../services/api-client";
-import { CanceledError } from "axios";
-
+import useData from "./useData";
+import type { Department } from "./useDepartments";
 
 export interface Employee {
   id: number;
@@ -17,31 +15,10 @@ export interface Employee {
   discProfileId: number;
 }
 
-const useEmployees = () => {
-    const [employees, setEmployees] = useState<Employee[]>([]);
-    const [error, setError] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
-
-
-     useEffect(() => {
-        const controller = new AbortController();
-
-        apiClient
-          .get<Employee[]>("/employees")
-          .then((res) => {
-            setEmployees(res.data);
-            setIsLoading(false);
-          })
-          .catch((err) => {
-            if (err instanceof CanceledError) return;
-            setError(err.message);
-            setIsLoading(false);
-          });
-
-
-          return () => controller.abort();//what is this
-      }, []);
-    return { employees, error, isLoading };
-}
-
+const useEmployees = (selectedDepartment: Department | null) =>
+  useData<Employee>(
+    "/employees",
+    { params: { departments: selectedDepartment?.id } },
+    [selectedDepartment?.id],
+  );
 export default useEmployees;

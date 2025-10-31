@@ -42,8 +42,8 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<DiscProfileDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-//Using the generic type 'GenericRepository<T>' requires 1 type arguments so surround with typeof()
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped<IEmployeesRepository, EmployeesRepository>();
 
 var app = builder.Build();
 
