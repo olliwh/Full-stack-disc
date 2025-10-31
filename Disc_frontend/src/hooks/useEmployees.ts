@@ -1,5 +1,6 @@
+import type { EmployeeQuery } from "../App";
 import useData from "./useData";
-import type { Department } from "./useDepartments";
+import type { DiscProfile } from "./useDiscProfiles";
 
 export interface Employee {
   id: number;
@@ -10,15 +11,19 @@ export interface Employee {
   experience: number;
   imagePath: string;
   companyId: number;
-  departmentId: number;
-  positionId: number;
-  discProfileId: number;
+  discType: DiscProfile;
 }
 
-const useEmployees = (selectedDepartment: Department | null) =>
+const useEmployees = (employeeQuery: EmployeeQuery) =>
   useData<Employee>(
     "/employees",
-    { params: { departments: selectedDepartment?.id } },
-    [selectedDepartment?.id],
+    {
+      params: {
+        departmentId: employeeQuery.department?.id,
+        positionId: employeeQuery.position?.id,
+        discProfileId: employeeQuery.discProfile?.id,
+      },
+    },
+    [employeeQuery],
   );
 export default useEmployees;

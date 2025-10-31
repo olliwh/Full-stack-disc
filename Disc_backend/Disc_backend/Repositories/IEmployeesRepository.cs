@@ -4,6 +4,6 @@ namespace Disc_backend.Repositories
 {
     public interface IEmployeesRepository
     {
-        Task<List<Employee>?> GetAll(int? departmentId, int? positionId);
+        Task<List<Employee>?> GetAll(int? departmentId, int? discProfileId, int? positionId);
     }
 }

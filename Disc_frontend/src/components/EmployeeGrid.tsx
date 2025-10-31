@@ -1,21 +1,20 @@
 import { SimpleGrid, Text } from "@chakra-ui/react";
 
-import type { Department } from "../hooks/useDepartments";
 import useEmployees from "../hooks/useEmployees";
 import EmployeeCard from "./EmployeeCard";
 import EmployeeCardSkeleton from "./EmployeeCardSkeleton";
+import type { EmployeeQuery } from "../App";
 
 interface Props {
-  selectedDepartment: Department | null;
+  employeeQuery: EmployeeQuery;
 }
 
-const EmployeeGrid = ({ selectedDepartment }: Props) => {
+const EmployeeGrid = ({ employeeQuery }: Props) => {
   const {
     data: employees,
     error,
     isLoading,
-  } = useEmployees(selectedDepartment);
-  console.log("grid tsx " + selectedDepartment?.id);
+  } = useEmployees(employeeQuery);
 
   const skeletons = [...Array(10).keys()];
 

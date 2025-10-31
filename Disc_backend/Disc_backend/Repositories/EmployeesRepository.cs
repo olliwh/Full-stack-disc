@@ -17,18 +17,22 @@ namespace Disc_backend.Repositories
         }
 
 
-        public async Task<List<Employee>?> GetAll(int? departmentId, int? positionId)
+        public async Task<List<Employee>?> GetAll(int? departmentId, int? discProfileId, int? positionId)
         {
             List<Employee> employees = await _dbSet.ToListAsync();
             if (employees == null || employees.Count == 0)
             {
                 return null;
             }
-            else if (departmentId != null)
+            if (departmentId != null)
             {
                 employees = employees.FindAll(employee => employee.DepartmentId == departmentId);
             }
-            else if (positionId != null)
+            if (discProfileId != null)
+            {
+                employees = employees.FindAll(employee => employee.DiscProfileId == discProfileId);
+            }
+            if (positionId != null)
             {
                 employees = employees.FindAll(employee => employee.PositionId == positionId);
             }

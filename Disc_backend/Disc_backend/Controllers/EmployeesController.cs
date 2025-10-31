@@ -40,10 +40,11 @@ namespace Disc_backend.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public override async Task<IActionResult> GetAll(
-            [FromQuery] int? departments = null,
-            [FromQuery] int? positions = null)
+            [FromQuery] int? departmentId = null,
+            [FromQuery] int? discProfileId = null,
+            [FromQuery] int? positionId = null)
         {
-            var employees = await _employeeRepository.GetAll(departments, positions);
+            var employees = await _employeeRepository.GetAll(departmentId, discProfileId, positionId);
             return Ok(employees);
         }
     }
