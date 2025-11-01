@@ -1,6 +1,5 @@
 ﻿using Disc_backend.Data;
 using Microsoft.EntityFrameworkCore;
-
 namespace Disc_backend.Repositories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class

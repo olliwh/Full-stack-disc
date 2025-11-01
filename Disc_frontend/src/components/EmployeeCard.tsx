@@ -8,7 +8,7 @@ interface Props {
 
 const EmployeeCard = ({ employee }: Props) => {
   // const color = '#' +  employee.discType.color;
-  // console.log(color);
+  console.log(employee);
 
   return (
     <Card borderRadius="1" overflow="hidden">

@@ -21,6 +21,7 @@ function App() {
   const [employeeQuery, setEmployeeQuery] = useState<EmployeeQuery>(
     {} as EmployeeQuery,
   );
+
   const handleSelect = (
     key: keyof EmployeeQuery,
     value: Department | Position | DiscProfile | null,
